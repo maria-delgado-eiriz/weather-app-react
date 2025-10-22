@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build outputs
+dist/
+build/
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode/
+.idea/
+
+# Git
+.git/
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+
+
+# Logs
+*.log
+logs/
+
+# Coverage
+coverage/
+
+# Documentation
+*.md
