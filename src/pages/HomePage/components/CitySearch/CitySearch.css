@@ -160,40 +160,6 @@
   margin-top: 1rem !important;
 }
 
-.selected-city-weather {
-  margin-top: 1.5rem;
-  background: rgba(255, 255, 255, 0.1) !important;
-  backdrop-filter: blur(10px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  border-radius: 12px !important;
-}
-
-.selected-city-title {
-  color: white !important;
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
-  margin-bottom: 0.5rem !important;
-  text-align: center;
-}
-
-.weather-summary {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.weather-temp {
-  color: white !important;
-  font-size: 1.5rem !important;
-  font-weight: 700 !important;
-}
-
-.weather-condition {
-  color: rgba(255, 255, 255, 0.9) !important;
-  font-size: 0.9rem !important;
-}
-
 /* Responsive design */
 @media (max-width: 768px) {
   .city-search-content {

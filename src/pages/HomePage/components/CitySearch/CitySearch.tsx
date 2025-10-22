@@ -2,8 +2,7 @@ import React, { useState, useCallback, useRef, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { createPortal } from 'react-dom'
 import {
-  searchCities,
-  fetchCurrentWeather
+  searchCities
 } from '../../../../services/open-meteo.api'
 import {
   Card,
@@ -21,7 +20,7 @@ import {
 } from '@mui/material'
 import { Search, LocationOn, People } from '@mui/icons-material'
 import './CitySearch.css'
-import type { SearchResult, CurrentWeatherData } from '../../../../types/weather.types'
+import type { SearchResult } from '../../../../types/weather.types'
 
 const CitySearch: React.FC = () => {
   const navigate = useNavigate()
@@ -30,8 +29,6 @@ const CitySearch: React.FC = () => {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showDropdown, setShowDropdown] = useState(false)
-  const [selectedCity, setSelectedCity] = useState<SearchResult | null>(null)
-  const [weatherData, setWeatherData] = useState<CurrentWeatherData | null>(null)
   const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number; width: number } | null>(null)
   const searchTimeoutRef = useRef<number | null>(null)
   const searchInputRef = useRef<HTMLDivElement>(null)
@@ -75,23 +72,12 @@ const CitySearch: React.FC = () => {
   }
 
   const handleCitySelect = async (city: SearchResult) => {
-    setSelectedCity(city)
     setSearchQuery(`${city.name}, ${city.country}`)
     setShowDropdown(false)
     
-    try {
-      setLoading(true)
-      const weather = await fetchCurrentWeather(city.latitude, city.longitude)
-      setWeatherData(weather)
-      
-      // Navigate to weather details page
-      const cityName = encodeURIComponent(`${city.name}, ${city.country}`)
-      navigate(`/weather/${cityName}/${city.latitude}/${city.longitude}`)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to fetch weather')
-    } finally {
-      setLoading(false)
-    }
+    // Navigate to weather details page
+    const cityName = encodeURIComponent(`${city.name}, ${city.country}`)
+    navigate(`/weather/${cityName}/${city.latitude}/${city.longitude}`)
   }
 
   const handleInputFocus = () => {
@@ -225,24 +211,6 @@ const CitySearch: React.FC = () => {
           <Alert severity="error" className="search-error">
             {error}
           </Alert>
-        )}
-
-        {selectedCity && weatherData && (
-          <Card className="selected-city-weather">
-            <CardContent>
-              <Typography className="selected-city-title">
-                🌤️ Weather in {selectedCity.name}
-              </Typography>
-              <Box className="weather-summary">
-                <Typography className="weather-temp">
-                  {weatherData.weatherIcon} {weatherData.temperature}°C
-                </Typography>
-                <Typography className="weather-condition">
-                  {weatherData.condition}
-                </Typography>
-              </Box>
-            </CardContent>
-          </Card>
         )}
       </CardContent>
     </Card>

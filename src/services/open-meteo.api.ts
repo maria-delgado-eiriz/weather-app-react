@@ -6,60 +6,9 @@ import {
   type CurrentWeatherData,
   type FiveDayForecastData,
   type FiveDayForecastItem,
-  type LocationInfo,
   type CitySearchData
 } from '../types/weather.types'
-
-const getWeatherIcon = (code: number): string => {
-  if (code === 0) return '☀️'
-  if (code === 1) return '🌤️'
-  if (code === 2) return '⛅'
-  if (code === 3) return '☁️'
-  if ([45, 48].includes(code)) return '🌫️'
-  if ([51, 53, 55, 56, 57].includes(code)) return '🌦️'
-  if ([61, 63, 65, 66, 67].includes(code)) return '🌧️'
-  if ([71, 73, 75, 77, 80, 81, 82].includes(code)) return '🌨️'
-  if ([85, 86].includes(code)) return '❄️'
-  if ([95, 96, 99].includes(code)) return '⛈️'
-  return '❓' // Default for unknown codes
-}
-
-export const getLocationInfo = async (
-  latitude: number,
-  longitude: number
-): Promise<LocationInfo> => {
-  try {
-    const url = `https://geocoding-api.open-meteo.com/v1/search?latitude=${latitude}&longitude=${longitude}&count=1&language=en&format=json`
-
-    const response = await fetch(url)
-    const data = await response.json()
-
-    if (data.results && data.results.length > 0) {
-      const result = data.results[0]
-      const city = result.name || 'Unknown city'
-      const country = result.country || 'Unknown country'
-
-      return {
-        city,
-        country,
-        fullLocation: `${city}, ${country}`
-      }
-    }
-
-    return {
-      city: 'Location',
-      country: 'Unknown',
-      fullLocation: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
-    }
-  } catch (error) {
-    console.error('Geocoding error:', error)
-    return {
-      city: 'Location',
-      country: 'Unknown',
-      fullLocation: `${latitude.toFixed(2)}, ${longitude.toFixed(2)}`
-    }
-  }
-}
+import { getWeatherIcon } from '../utils/weather.utils'
 
 export const fetchCurrentWeather = async (
   latitude: number = 40.4168,
@@ -70,9 +19,9 @@ export const fetchCurrentWeather = async (
       latitude: [latitude],
       longitude: [longitude],
       current: [
-        'temperature_2m', 
-        'weather_code', 
-        'wind_speed_10m', 
+        'temperature_2m',
+        'weather_code',
+        'wind_speed_10m',
         'relative_humidity_2m'
       ],
       timezone: 'auto'
@@ -90,9 +39,9 @@ export const fetchCurrentWeather = async (
     if (!current) {
       throw new Error('No current data available')
     }
-    
+
     const weatherCode = current.variables(1)?.value() || 0
-    
+
     return {
       temperature: Math.round(current.variables(0)?.value() || 0),
       condition: WEATHER_CONDITION_MAP[weatherCode],

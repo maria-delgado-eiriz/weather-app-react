@@ -44,7 +44,6 @@ const CurrentWeather: React.FC = () => {
   }
 
   useEffect(() => {
-    console.log(location)
     if (location) loadWeatherData()
   }, [location])
 
