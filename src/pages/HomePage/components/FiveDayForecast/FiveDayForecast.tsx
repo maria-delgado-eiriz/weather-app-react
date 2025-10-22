@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  fetchFiveDayForecast,
-  getUserLocationByIP
-} from '../../../../services/open-meteo.api'
+import { fetchFiveDayForecast } from '../../../../services/open-meteo.api'
 import {
   Card,
   CardContent,
@@ -13,9 +10,14 @@ import {
 } from '@mui/material'
 import './FiveDayForecast.css'
 import type { FiveDayForecastData } from '../../../../types/weather.types'
+import { useLocation } from '../../../../context/LocationContext'
 
 const FiveDayForecast: React.FC = () => {
-  const [forecastData, setForecastData] = useState<FiveDayForecastData | null>(null)
+  const { location, loading: locationLoading } = useLocation()
+
+  const [forecastData, setForecastData] = useState<FiveDayForecastData | null>(
+    null
+  )
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -24,11 +26,9 @@ const FiveDayForecast: React.FC = () => {
       setLoading(true)
       setError(null)
 
-      const userLocationInfo = await getUserLocationByIP()
-
       const data = await fetchFiveDayForecast(
-        userLocationInfo.latitude,
-        userLocationInfo.longitude
+        location!.latitude,
+        location!.longitude
       )
 
       setForecastData(data)
@@ -41,9 +41,9 @@ const FiveDayForecast: React.FC = () => {
 
   useEffect(() => {
     loadForecastData()
-  }, [])
+  }, [location])
 
-  if (loading) {
+  if (loading || locationLoading) {
     return (
       <Card className="forecast-card">
         <CardContent className="forecast-content">
@@ -81,32 +81,26 @@ const FiveDayForecast: React.FC = () => {
   return (
     <Card className="forecast-card">
       <CardContent className="forecast-content">
-        <Typography className="forecast-title">
-          📅 5-Day Forecast
-        </Typography>
-        
+        <Typography className="forecast-title">📅 5-Day Forecast</Typography>
+
         <Box className="forecast-container">
           {forecastData.forecast.map((day, index) => (
             <Box key={index} className="forecast-day">
-              <Typography className="forecast-date">
-                {day.date}
-              </Typography>
-              
+              <Typography className="forecast-date">{day.date}</Typography>
+
               <Typography className="forecast-icon">
                 {day.weatherIcon}
               </Typography>
-              
+
               <Typography className="forecast-condition">
                 {day.condition}
               </Typography>
-              
+
               <Box className="forecast-temps">
                 <Typography className="forecast-high">
                   {day.highTemp}°
                 </Typography>
-                <Typography className="forecast-low">
-                  {day.lowTemp}°
-                </Typography>
+                <Typography className="forecast-low">{day.lowTemp}°</Typography>
               </Box>
             </Box>
           ))}

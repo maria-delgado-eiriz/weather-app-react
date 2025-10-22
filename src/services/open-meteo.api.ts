@@ -1,13 +1,13 @@
 import { fetchWeatherApi } from 'openmeteo'
 import {
-  GEOLOCATION_BY_IP_URL,
   OPEN_METEO_FORECAST_URL,
+  OPEN_METEO_GEOCODING_URL,
   WEATHER_CONDITION_MAP,
   type CurrentWeatherData,
   type FiveDayForecastData,
   type FiveDayForecastItem,
   type LocationInfo,
-  type UserLocationInfo
+  type CitySearchData
 } from '../types/weather.types'
 
 const getWeatherIcon = (code: number): string => {
@@ -155,48 +155,30 @@ export const fetchFiveDayForecast = async (
   }
 }
 
-// Función para obtener geolocalización del navegador
-export const getUserLocationByBrowser = (): Promise<{
-  latitude: number
-  longitude: number
-}> => {
-  return new Promise((resolve, reject) => {
-    if (!navigator.geolocation) {
-      reject(new Error('Geolocation not supported'))
-      return
-    }
-
-    const options = {
-      enableHighAccuracy: false,
-      timeout: 5000,
-      maximumAge: 300000
-    }
-
-    navigator.geolocation.getCurrentPosition(
-      position => {
-        resolve({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude
-        })
-      },
-      error => reject(error),
-      options
-    )
-  })
-}
-
-export const getUserLocationByIP = async (): Promise<UserLocationInfo> => {
+export const searchCities = async (query: string): Promise<CitySearchData> => {
   try {
-    const response = await fetch(GEOLOCATION_BY_IP_URL)
+    if (!query.trim()) {
+      return { results: [], generationtime_ms: 0 }
+    }
+
+    const url = `${OPEN_METEO_GEOCODING_URL}?name=${encodeURIComponent(
+      query
+    )}&count=10&language=en&format=json`
+
+    const response = await fetch(url)
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
+
     const data = await response.json()
+
     return {
-      latitude: data.latitude,
-      longitude: data.longitude,
-      city: data.city,
-      country: data.country
+      results: data.results || [],
+      generationtime_ms: data.generationtime_ms || 0
     }
   } catch (error) {
-    console.error('IP geolocation error:', error)
+    console.error('Error searching cities:', error)
     throw error
   }
 }

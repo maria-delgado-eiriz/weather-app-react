@@ -1,0 +1,237 @@
+/* CitySearch.css */
+.city-search-card {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+.city-search-content {
+  padding: 1.5rem !important;
+}
+
+.city-search-title {
+  color: white !important;
+  font-size: 1.5rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 1.5rem !important;
+  text-align: center;
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+}
+
+.search-input .MuiOutlinedInput-root {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.search-input .MuiOutlinedInput-root:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.search-input .MuiOutlinedInput-root.Mui-focused {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.search-input .MuiOutlinedInput-input {
+  color: white;
+  padding: 14px 16px;
+}
+
+.search-input .MuiOutlinedInput-input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  opacity: 1;
+}
+
+.search-input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.search-input .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.search-input .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, 0.8);
+  border-width: 2px;
+}
+
+.search-icon {
+  color: rgba(255, 255, 255, 0.7) !important;
+  margin-right: 8px;
+}
+
+.dropdown-card {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+}
+
+.dropdown-list {
+  padding: 0 !important;
+}
+
+.dropdown-item {
+  padding: 12px 16px !important;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(74, 185, 255, 0.1) !important;
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.city-primary-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 4px;
+}
+
+.city-name {
+  color: #1a1a1a !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+}
+
+.city-chips {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.country-chip {
+  background-color: rgba(74, 185, 255, 0.2) !important;
+  color: #0984e3 !important;
+  font-size: 0.7rem !important;
+  height: 20px !important;
+}
+
+.state-chip {
+  background-color: rgba(116, 185, 255, 0.2) !important;
+  color: #74b9ff !important;
+  font-size: 0.7rem !important;
+  height: 20px !important;
+}
+
+.city-secondary-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.coordinates,
+.population {
+  display: flex;
+  align-items: center;
+  color: rgba(0, 0, 0, 0.6) !important;
+  font-size: 0.75rem !important;
+}
+
+.location-icon,
+.people-icon {
+  font-size: 14px !important;
+  margin-right: 4px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.search-error {
+  margin-top: 1rem !important;
+}
+
+.selected-city-weather {
+  margin-top: 1.5rem;
+  background: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  border-radius: 12px !important;
+}
+
+.selected-city-title {
+  color: white !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+  text-align: center;
+}
+
+.weather-summary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.weather-temp {
+  color: white !important;
+  font-size: 1.5rem !important;
+  font-weight: 700 !important;
+}
+
+.weather-condition {
+  color: rgba(255, 255, 255, 0.9) !important;
+  font-size: 0.9rem !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .city-search-content {
+    padding: 1rem !important;
+  }
+  
+  .city-primary-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .city-chips {
+    margin-top: 4px;
+  }
+  
+  .city-secondary-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  
+  .dropdown-card {
+    max-height: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dropdown-item {
+    padding: 10px 12px !important;
+  }
+  
+  .city-name {
+    font-size: 0.9rem !important;
+  }
+  
+  .coordinates,
+  .population {
+    font-size: 0.7rem !important;
+  }
+}

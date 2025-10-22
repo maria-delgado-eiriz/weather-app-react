@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  fetchCurrentWeather,
-  getUserLocationByIP
-} from '../../../../services/open-meteo.api'
+import { fetchCurrentWeather } from '../../../../services/open-meteo.api'
 import {
   Card,
   CardContent,
@@ -12,14 +9,11 @@ import {
   Alert
 } from '@mui/material'
 import './CurrentWeather.css'
-import {
-  type UserLocationInfo,
-  type CurrentWeatherData
-} from '../../../../types/weather.types'
+import { type CurrentWeatherData } from '../../../../types/weather.types'
+import { useLocation } from '../../../../context/LocationContext'
 
 const CurrentWeather: React.FC = () => {
-  const [currentLocationData, setCurrentLocationData] =
-    useState<UserLocationInfo>()
+  const { location, loading: locationLoading } = useLocation()
 
   const [weatherData, setWeatherData] = useState<CurrentWeatherData | null>(
     null
@@ -32,13 +26,9 @@ const CurrentWeather: React.FC = () => {
       setLoading(true)
       setError(null)
 
-      const userLocationInfo = await getUserLocationByIP()
-
-      setCurrentLocationData(userLocationInfo)
-
       const data = await fetchCurrentWeather(
-        userLocationInfo.latitude,
-        userLocationInfo.longitude
+        location!.latitude,
+        location!.longitude
       )
 
       setWeatherData(data)
@@ -50,10 +40,11 @@ const CurrentWeather: React.FC = () => {
   }
 
   useEffect(() => {
-    loadWeatherData()
-  }, [])
+    console.log(location)
+    if (location) loadWeatherData()
+  }, [location])
 
-  if (loading) {
+  if (loading || locationLoading) {
     return (
       <Card className="current-weather-card">
         <CardContent className="current-weather-content">
@@ -95,10 +86,9 @@ const CurrentWeather: React.FC = () => {
           {weatherData.weatherIcon} Current Weather
         </Typography>
         <Box className="weather-info-container">
-          {}
           <Typography className="weather-location">
-            📍 {currentLocationData ? currentLocationData.city : 'Unknown'},
-            {currentLocationData ? currentLocationData.country : 'Unknown'}
+            📍 {location ? location.city : 'Unknown'},
+            {location ? location.country : 'Unknown'}
           </Typography>
 
           <Typography className="weather-temperature">

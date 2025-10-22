@@ -10,8 +10,8 @@ import {
 } from '@mui/material'
 import { Home, CloudQueue } from '@mui/icons-material'
 import HomePage from './pages/HomePage'
-import WeatherDetails from './pages/WeatherDetailsPage'
 import './App.css'
+import { LocationProvider } from './context/LocationContext'
 
 type Screen = 'home' | 'details'
 
@@ -68,17 +68,6 @@ function App() {
     setCurrentScreen(newValue)
   }
 
-  const renderScreen = () => {
-    switch (currentScreen) {
-      case 'home':
-        return <HomePage />
-      case 'details':
-        return <WeatherDetails />
-      default:
-        return <HomePage />
-    }
-  }
-
   return (
     <ThemeProvider theme={theme}>
       <Box className="app-container">
@@ -111,7 +100,9 @@ function App() {
         </AppBar>
 
         <Box component="main" className="main-content">
-          {renderScreen()}
+          <LocationProvider>
+            <HomePage />
+          </LocationProvider>
         </Box>
       </Box>
     </ThemeProvider>

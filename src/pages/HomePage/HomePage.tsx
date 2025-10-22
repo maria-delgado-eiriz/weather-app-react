@@ -2,7 +2,7 @@ import React from 'react'
 import './HomePage.css'
 import Grid from '@mui/material/Grid'
 import FiveDayForecast from './components/FiveDayForecast'
-import CitySearch from './components/CitySearch/CitySearch'
+import CitySearch from './components/CitySearch'
 import CurrentWeather from './components/CurrentWeather'
 
 const HomePage: React.FC = () => {
@@ -10,13 +10,13 @@ const HomePage: React.FC = () => {
     <div className="home-page">
       <Grid container spacing={2}>
         <Grid size={12}>
+          <CitySearch />
+        </Grid>
+        <Grid size={12}>
           <CurrentWeather />
         </Grid>
         <Grid size={12}>
           <FiveDayForecast />
-        </Grid>
-        <Grid size={12}>
-          <CitySearch />
         </Grid>
       </Grid>
     </div>

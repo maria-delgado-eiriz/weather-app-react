@@ -35,6 +35,21 @@ export interface FiveDayForecastData {
   forecast: FiveDayForecastItem[]
 }
 
+export interface SearchResult {
+  id: number
+  name: string
+  country: string
+  latitude: number
+  longitude: number
+  admin1?: string // State/Region
+  population?: number
+}
+
+export interface CitySearchData {
+  results: SearchResult[]
+  generationtime_ms: number
+}
+
 export const WEATHER_CONDITION_MAP: { [key: number]: string } = {
   0: '☀️ Clear sky',
   1: '🌤️ Mainly clear',
@@ -68,3 +83,4 @@ export const WEATHER_CONDITION_MAP: { [key: number]: string } = {
 
 export const GEOLOCATION_BY_IP_URL = 'https://ipapi.co/json/'
 export const OPEN_METEO_FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
+export const OPEN_METEO_GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search'
