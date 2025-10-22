@@ -22,6 +22,19 @@ export interface LocationInfo {
   fullLocation: string
 }
 
+export interface FiveDayForecastItem {
+  date: string
+  highTemp: number
+  lowTemp: number
+  condition: string
+  weatherIcon: string
+  weatherCode: number
+}
+
+export interface FiveDayForecastData {
+  forecast: FiveDayForecastItem[]
+}
+
 export const WEATHER_CONDITION_MAP: { [key: number]: string } = {
   0: '☀️ Clear sky',
   1: '🌤️ Mainly clear',
@@ -32,33 +45,26 @@ export const WEATHER_CONDITION_MAP: { [key: number]: string } = {
   51: '🌦️ Light drizzle',
   53: '🌦️ Moderate drizzle',
   55: '🌦️ Dense drizzle',
+  56: '🌦️ Freezing Drizzle Light',
+  57: '🌦️ Freezing Drizzle Dense',
   61: '🌧️ Slight rain',
   63: '🌧️ Moderate rain',
   65: '🌧️ Heavy rain',
+  66: '🌧️ Freezing Rain Light',
+  67: '🌧️ Freezing Rain Dense',
   71: '🌨️ Slight snow fall',
   73: '🌨️ Moderate snow fall',
   75: '🌨️ Heavy snow fall',
-  95: '⛈️ Thunderstorm'
+  77: '🌨️ Snow grains',
+  80: '🌨️ Rain showers: Slight',
+  81: '🌨️ Rain showers: Moderate',
+  82: '🌨️ Rain showers: Violent',
+  85: '🌨️ Snow showers slight',
+  86: '🌨️ Snow showers heavy',
+  95: '⛈️ Thunderstorm',
+  96: '⛈️ Thunderstorm with slight hail',
+  99: '⛈️ Thunderstorm with heavy hail'
 }
-export const WEATHER_ICON_MAP = new Map([
-  [0, '☀️'],
-  [1, '🌤️'],
-  [2, '⛅'],
-  [3, '☁️'],
-  [45, '🌫️'],
-  [48, '🌫️'],
-  [51, '🌦️'],
-  [53, '🌦️'],
-  [55, '🌦️'],
-  [61, '🌧️'],
-  [63, '🌧️'],
-  [65, '🌧️'],
-  [71, '🌨️'],
-  [73, '🌨️'],
-  [75, '🌨️'],
-  [95, '⛈️']
-])
 
 export const GEOLOCATION_BY_IP_URL = 'https://ipapi.co/json/'
-export const OPEN_METEO__CURRENT_WEATHER_URL =
-  'https://api.open-meteo.com/v1/forecast'
+export const OPEN_METEO_FORECAST_URL = 'https://api.open-meteo.com/v1/forecast'
