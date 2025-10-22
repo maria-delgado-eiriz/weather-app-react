@@ -1,0 +1,36 @@
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  flex-grow: 1;
+  min-height: 100vh;
+}
+
+.toolbar-container {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.tabs-container {
+  min-height: 48px;
+}
+
+.tab-item {
+  min-height: 48px !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+}
+
+.main-content {
+  flex-grow: 1;
+}
