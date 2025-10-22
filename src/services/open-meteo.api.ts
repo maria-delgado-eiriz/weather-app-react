@@ -69,7 +69,12 @@ export const fetchCurrentWeather = async (
     const params = {
       latitude: [latitude],
       longitude: [longitude],
-      current: ['temperature_2m', 'weather_code'],
+      current: [
+        'temperature_2m', 
+        'weather_code', 
+        'wind_speed_10m', 
+        'relative_humidity_2m'
+      ],
       timezone: 'auto'
     }
 
@@ -85,11 +90,15 @@ export const fetchCurrentWeather = async (
     if (!current) {
       throw new Error('No current data available')
     }
-    const weatherCode = current.variables(2)?.value() || 0
+    
+    const weatherCode = current.variables(1)?.value() || 0
+    
     return {
       temperature: Math.round(current.variables(0)?.value() || 0),
       condition: WEATHER_CONDITION_MAP[weatherCode],
-      weatherIcon: getWeatherIcon(weatherCode)
+      weatherIcon: getWeatherIcon(weatherCode),
+      windSpeed: Math.round(current.variables(2)?.value() || 0),
+      humidity: Math.round(current.variables(3)?.value() || 0)
     }
   } catch (error) {
     console.error('Error fetching weather data:', error)

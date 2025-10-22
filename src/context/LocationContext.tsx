@@ -5,6 +5,7 @@ import React, {
   useEffect,
   type ReactNode
 } from 'react'
+import { getUserLocation } from '../services/location.service'
 import type { UserLocationInfo } from '../types/weather.types'
 
 interface LocationContextType {
@@ -30,30 +31,17 @@ export const LocationProvider: React.FC<LocationProviderProps> = ({
   const [error, setError] = useState<string | null>(null)
 
   const refreshLocation = async () => {
-    setLoading(true)
-
-    navigator.geolocation.getCurrentPosition(async position => {
-      const { latitude, longitude } = position.coords
-
-      try {
-        const res = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
-        )
-        const data = await res.json()
-        const city =
-          data.address.city ||
-          data.address.town ||
-          data.address.village ||
-          'Unknown'
-        const country = data.address.country || 'Unknown'
-
-        setLocation({ latitude, longitude, city, country })
-        setLoading(false)
-      } catch (err: any) {
-        setError(err.message)
-        setLoading(false)
-      }
-    })
+    try {
+      setLoading(true)
+      setError(null)
+      
+      const locationData = await getUserLocation()
+      setLocation(locationData)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to get location')
+    } finally {
+      setLoading(false)
+    }
   }
 
   useEffect(() => {

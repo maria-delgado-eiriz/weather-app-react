@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { fetchCurrentWeather } from '../../../../services/open-meteo.api'
 import {
   Card,
@@ -6,13 +7,16 @@ import {
   Typography,
   Box,
   CircularProgress,
-  Alert
+  Alert,
+  Button
 } from '@mui/material'
+import { Visibility } from '@mui/icons-material'
 import './CurrentWeather.css'
 import { type CurrentWeatherData } from '../../../../types/weather.types'
 import { useLocation } from '../../../../context/LocationContext'
 
 const CurrentWeather: React.FC = () => {
+  const navigate = useNavigate()
   const { location, loading: locationLoading } = useLocation()
 
   const [weatherData, setWeatherData] = useState<CurrentWeatherData | null>(
@@ -79,6 +83,13 @@ const CurrentWeather: React.FC = () => {
     )
   }
 
+  const handleViewDetails = () => {
+    if (location) {
+      const cityName = encodeURIComponent(`${location.city}, ${location.country}`)
+      navigate(`/weather/${cityName}/${location.latitude}/${location.longitude}`)
+    }
+  }
+
   return (
     <Card className="current-weather-card">
       <CardContent className="current-weather-content">
@@ -98,6 +109,16 @@ const CurrentWeather: React.FC = () => {
           <Typography className="weather-condition">
             {weatherData.condition}
           </Typography>
+
+          <Button
+            variant="outlined"
+            startIcon={<Visibility />}
+            onClick={handleViewDetails}
+            className="view-details-button"
+            fullWidth
+          >
+            View Details
+          </Button>
         </Box>
       </CardContent>
     </Card>

@@ -1,4 +1,6 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { createPortal } from 'react-dom'
 import {
   searchCities,
   fetchCurrentWeather
@@ -22,6 +24,7 @@ import './CitySearch.css'
 import type { SearchResult, CurrentWeatherData } from '../../../../types/weather.types'
 
 const CitySearch: React.FC = () => {
+  const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [loading, setLoading] = useState(false)
@@ -29,7 +32,9 @@ const CitySearch: React.FC = () => {
   const [showDropdown, setShowDropdown] = useState(false)
   const [selectedCity, setSelectedCity] = useState<SearchResult | null>(null)
   const [weatherData, setWeatherData] = useState<CurrentWeatherData | null>(null)
+  const [dropdownPosition, setDropdownPosition] = useState<{ top: number; left: number; width: number } | null>(null)
   const searchTimeoutRef = useRef<number | null>(null)
+  const searchInputRef = useRef<HTMLDivElement>(null)
 
   const handleSearch = useCallback(async (query: string) => {
     if (!query.trim()) {
@@ -78,6 +83,10 @@ const CitySearch: React.FC = () => {
       setLoading(true)
       const weather = await fetchCurrentWeather(city.latitude, city.longitude)
       setWeatherData(weather)
+      
+      // Navigate to weather details page
+      const cityName = encodeURIComponent(`${city.name}, ${city.country}`)
+      navigate(`/weather/${cityName}/${city.latitude}/${city.longitude}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to fetch weather')
     } finally {
@@ -88,8 +97,26 @@ const CitySearch: React.FC = () => {
   const handleInputFocus = () => {
     if (searchResults.length > 0) {
       setShowDropdown(true)
+      updateDropdownPosition()
     }
   }
+
+  const updateDropdownPosition = () => {
+    if (searchInputRef.current) {
+      const rect = searchInputRef.current.getBoundingClientRect()
+      setDropdownPosition({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (showDropdown && searchResults.length > 0) {
+      updateDropdownPosition()
+    }
+  }, [showDropdown, searchResults])
 
   const handleInputBlur = () => {
     // Delay hiding dropdown to allow for clicks
@@ -115,6 +142,7 @@ const CitySearch: React.FC = () => {
         
         <Box className="search-container">
           <TextField
+            ref={searchInputRef}
             fullWidth
             variant="outlined"
             placeholder="Search for a city..."
@@ -129,8 +157,17 @@ const CitySearch: React.FC = () => {
             }}
           />
           
-          {showDropdown && searchResults.length > 0 && (
-            <Card className="dropdown-card">
+          {showDropdown && searchResults.length > 0 && dropdownPosition && createPortal(
+            <Card 
+              className="dropdown-card"
+              style={{
+                position: 'absolute',
+                top: dropdownPosition.top,
+                left: dropdownPosition.left,
+                width: dropdownPosition.width,
+                zIndex: 9999
+              }}
+            >
               <List className="dropdown-list">
                 {searchResults.map((city) => (
                   <ListItem key={city.id} disablePadding>
@@ -179,7 +216,8 @@ const CitySearch: React.FC = () => {
                   </ListItem>
                 ))}
               </List>
-            </Card>
+            </Card>,
+            document.body
           )}
         </Box>
 

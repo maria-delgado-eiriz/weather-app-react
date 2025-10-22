@@ -2,6 +2,8 @@ export interface CurrentWeatherData {
   temperature: number
   condition: string
   weatherIcon: string
+  windSpeed?: number
+  humidity?: number
 }
 
 export interface Coordinates {
