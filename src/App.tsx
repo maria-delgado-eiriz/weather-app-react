@@ -9,8 +9,8 @@ import {
   createTheme
 } from '@mui/material'
 import { Home, CloudQueue } from '@mui/icons-material'
-import HomePage from './pages/HomePage/HomePage'
-import WeatherDetails from './pages/WeatherDetailsPage/WeatherDetailsPage'
+import HomePage from './pages/HomePage'
+import WeatherDetails from './pages/WeatherDetailsPage'
 import './App.css'
 
 type Screen = 'home' | 'details'

@@ -1,0 +1,58 @@
+.weather-details-page {
+  min-height: calc(100vh - 64px); /* Subtract AppBar height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Paper container with glassmorphism effect */
+.weather-details-paper {
+  padding: 2rem !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 1.5rem !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Main title */
+.weather-details-title {
+  color: white !important;
+  font-weight: 300 !important;
+  text-align: center !important;
+  margin-bottom: 1rem !important;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Subtitle */
+.weather-details-subtitle {
+  color: rgba(255, 255, 255, 0.9) !important;
+  text-align: center !important;
+  margin-bottom: 1rem !important;
+  font-style: italic;
+}
+
+/* Body text */
+.weather-details-body {
+  color: rgba(255, 255, 255, 0.8) !important;
+  text-align: center !important;
+  line-height: 1.6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .weather-details-page {
+    padding: 1rem;
+  }
+  
+  .weather-details-paper {
+    padding: 1.5rem !important;
+  }
+  
+  .weather-details-title {
+    font-size: 2rem !important;
+  }
+}
+

@@ -1,9 +1,9 @@
 import React from 'react'
 import './HomePage.css'
 import Grid from '@mui/material/Grid'
+// import FiveDayForecast from './components/FiveDayForecast'
+// import CitySearch from './components/CitySearch/CitySearch'
 import CurrentWeather from './components/CurrentWeather'
-import FiveDayForecast from './components/FiveDayForecast'
-import CitySearch from './components/CitySearch'
 
 const HomePage: React.FC = () => {
   return (
@@ -12,12 +12,12 @@ const HomePage: React.FC = () => {
         <Grid size={6}>
           <CurrentWeather />
         </Grid>
-        <Grid size={6}>
+        {/* <Grid size={6}>
           <FiveDayForecast />
         </Grid>
         <Grid size={12}>
           <CitySearch />
-        </Grid>
+        </Grid> */}
       </Grid>
     </div>
   )
